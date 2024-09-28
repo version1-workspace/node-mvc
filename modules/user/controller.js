@@ -1,9 +1,10 @@
-const User = require('../models/user')
+const User = require('./model')
+const { serialize, serializeError } = require('../../serializer')
 
 const index = (req, res) => {
   const users = User.findAll()
 
-  res.end(JSON.stringify({ data: users }))
+  res.end(serialize(users))
 }
 
 const show = (req, res) => {
@@ -12,10 +13,10 @@ const show = (req, res) => {
   const user = User.find(id)
 
   if (user) {
-    res.end(JSON.stringify({ data: user }))
+    res.end(serialize(user))
   } else {
     res.writeHead(404)
-    res.end(JSON.stringify({ message: 'User not found' }))
+    res.end(serializeError('User not found'))
   }
 }
 
@@ -28,7 +29,7 @@ const create = (req, res) => {
     res.end(JSON.stringify({}))
   } else {
     res.writeHead(400)
-    res.end(JSON.stringify({ message: 'User not created' }))
+    res.end(serializeError('User not created'))
   }
 }
 
@@ -37,7 +38,7 @@ const update = (req, res) => {
   const user = User.find(id)
   if (!user) {
     res.writeHead(404)
-    res.end(JSON.stringify({ message: 'User not found' }))
+    res.end(serializeError('User not found'))
     return
   }
 
@@ -46,7 +47,7 @@ const update = (req, res) => {
   user.save()
 
   res.writeHead(200)
-  res.end(JSON.stringify({ data: user }))
+  res.end(serialize(user))
 }
 
 const destroy = (req, res) => {
@@ -54,13 +55,13 @@ const destroy = (req, res) => {
   const user = User.find(id)
   if (!user) {
     res.writeHead(404)
-    res.end(JSON.stringify({ message: 'User not found' }))
+    res.end(serializeError('User not found'))
     return
   }
 
   user.destroy()
   res.writeHead(200)
-  res.end(JSON.stringify({ data: user }))
+  res.end(serialize(user))
 }
 
 module.exports = {

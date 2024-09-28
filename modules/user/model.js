@@ -1,4 +1,3 @@
-
 class User {
   static create(params) {
     if (!params?.name || !params?.email) {
@@ -21,7 +20,6 @@ class User {
     }
     return new User(data);
   }
-
 
   constructor({ id, name, email }) {
     this.id = id;

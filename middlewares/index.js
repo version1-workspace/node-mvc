@@ -1,4 +1,4 @@
-const users = require('../controllers/user');
+const users = require('../modules/user/controller');
 
 const bodyParser = (req, res) => {
   return new Promise((resolve, reject) => {
