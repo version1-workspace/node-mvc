@@ -1,34 +1,13 @@
 const http = require('node:http');
-const { bodyParser, json, routes, requestLogger } = require('./middlewares');
-
 // server
 const server = http.createServer((req, res) => {
-  midllewares(req, res);
+  console.log('Request URL', req.url);
+  console.log('Request Method', req.method);
+
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.write('Hello World!');
+  res.end();
 });
 
-const midllewares = async (req, res) => {
-  try {
-    const list = [
-      bodyParser,
-      json,
-      requestLogger,
-      routes
-    ]
-    for (let i = 0; i < list.length; i++) {
-      const middleware = list[i];
-      const next = await middleware(req, res);
-      if (!next) {
-        return
-      }
-    }
-  } catch (error) {
-    console.error("caught error", error);
-    res.writeHead(500);
-    res.end(JSON.stringify({ message: 'Internal Server Error' }));
-  }
-}
-
-
-
-console.log('Server running at http://localhost:8000');
-server.listen(8000);
+console.log('Server is running on http://localhost:8000');
+server.listen(8000)
